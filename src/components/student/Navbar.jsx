@@ -32,7 +32,7 @@ const Navbar = () => {
               <button
                 className="cursor-pointer"
                 onClick={() => {
-                  navigate("/educator");
+                  navigate("/educator/dashboard");
                 }}
               >
                 {isEducator ? "Educator Dashboard" : "Become Educator"}
