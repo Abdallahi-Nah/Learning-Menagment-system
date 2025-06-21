@@ -228,7 +228,7 @@ export const dummyCourses = [
                     {
                         "lectureId": "lecture1",
                         "lectureTitle": "What is JavaScript?",
-                        "lectureDuration": 16,
+                        "lectureDuration": 9,
                         "lectureUrl": "https://youtu.be/CBWnBi-awSA",
                         "isPreviewFree": true,
                         "lectureOrder": 1
@@ -301,7 +301,7 @@ export const dummyCourses = [
                     {
                         "lectureId": " lecture1",
                         "lectureTitle": "Lists and Tuples",
-                        "lectureDuration": 720,
+                        "lectureDuration": 180,
                         "lectureUrl": "https://youtu.be/HdLIMoQkXFA",
                         "isPreviewFree": true,
                         "lectureOrder": 1
