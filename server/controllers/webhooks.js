@@ -10,7 +10,7 @@ export const ClerkWebhooks = async (req, res) => {
     console.log("📦 Body:", JSON.stringify(req.body, null, 2));
 
     const wbhook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
-    wbhook.verify(JSON.stringify(req.body), {
+    await wbhook.verify(JSON.stringify(req.body), {
       "svix-id": req.headers["svix-id"],
       "svix-timestamp": req.headers["svix-timestamp"],
       "svix-signature": req.headers["svix-signature"],
@@ -23,8 +23,8 @@ export const ClerkWebhooks = async (req, res) => {
         console.log("👤 Création utilisateur détectée !");
         const userData = {
           _id: data.id,
-          email: data.email_addresses?.[0]?.email_address,
-          name: `${data.first_name} ${data.last_name}`,
+          email: data.email_addresses[0].email_address,
+          name: data.first_name + " " + data.last_name,
           imageUrl: data.image_url,
         };
         console.log("📌 Données utilisateur :", userData);
@@ -36,8 +36,8 @@ export const ClerkWebhooks = async (req, res) => {
 
       case "user.updated": {
         const userData = {
-          email: data.email_addresses?.[0]?.email_address,
-          name: `${data.first_name} ${data.last_name}`,
+          email: data.email_addresses[0].email_address,
+          name: data.first_name + " " + data.last_name,
           imageUrl: data.image_url,
         };
         await User.findByIdAndUpdate(data.id, userData);
