@@ -18,7 +18,7 @@ export const ClerkWebhooks = async (req, res) => {
         const userData = {
           _id: data.id,
           email: data.email_addresses[0].email_address,
-          name: data.first_name + " " + data.last_name,
+          name: `${data.first_name} ${data.last_name}`,
           imageUrl: data.image_url,
         };
         await User.create(userData);
@@ -29,24 +29,25 @@ export const ClerkWebhooks = async (req, res) => {
       case "user.updated": {
         const userData = {
           email: data.email_addresses[0].email_address,
-          name: data.first_name + " " + data.last_name,
+          name: `${data.first_name} ${data.last_name}`,
           imageUrl: data.image_url,
         };
-        await User.findByIdAndUpdate((data.id, userData));
+        await User.findByIdAndUpdate(data.id, userData);
         res.json({});
         break;
       }
 
-      case "user-deleted": {
-        await User.findOneAndDelete(data.id);
+      case "user.deleted": {
+        await User.findByIdAndDelete(data.id);
         res.json({});
         break;
       }
 
       default:
+        res.status(400).json({ message: "Unhandled event type" });
         break;
     }
   } catch (error) {
-    res.json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
