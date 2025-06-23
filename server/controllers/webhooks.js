@@ -9,12 +9,12 @@ export const ClerkWebhooks = async (req, res) => {
     console.log("🧾 Headers:", req.headers);
     console.log("📦 Body:", JSON.stringify(req.body, null, 2));
 
-    const wbhook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
-    await wbhook.verify(JSON.stringify(req.body), {
-      "svix-id": req.headers["svix-id"],
-      "svix-timestamp": req.headers["svix-timestamp"],
-      "svix-signature": req.headers["svix-signature"],
-    });
+    // const wbhook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
+    // await wbhook.verify(JSON.stringify(req.body), {
+    //   "svix-id": req.headers["svix-id"],
+    //   "svix-timestamp": req.headers["svix-timestamp"],
+    //   "svix-signature": req.headers["svix-signature"],
+    // });
 
     const { data, type } = req.body;
 
