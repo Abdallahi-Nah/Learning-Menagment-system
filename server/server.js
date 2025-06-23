@@ -3,15 +3,20 @@ import cors from "cors";
 import "dotenv/config";
 import connectDB from "./configs/mongodb.js";
 import { ClerkWebhooks } from "./controllers/webhooks.js";
+import educatorRouter from "./routes/educator.route.js";
+import { clerkMiddleware } from "@clerk/express";
+import connectCloudinary from "./configs/cloudinary.js";
 
 // initialize express
 const app = express();
 
 // connect to db
 await connectDB();
+await connectCloudinary();
 
 // middlewware
 app.use(cors());
+app.use(clerkMiddleware());
 
 // routes
 app.get("/", (req, res) => {
@@ -19,6 +24,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/clerk", express.json(), ClerkWebhooks);
+app.use("/api/educator", express.json(), educatorRouter);
 
 // port
 const PORT = process.env.PORT || 5000;
