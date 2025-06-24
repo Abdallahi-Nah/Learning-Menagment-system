@@ -64,3 +64,8 @@ export const ClerkWebhooks = async (req, res) => {
   }
 };
 
+
+
+export const stripeWebhooks = async (req, res) => {
+
+};
