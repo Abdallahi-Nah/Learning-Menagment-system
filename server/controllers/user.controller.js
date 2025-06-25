@@ -3,6 +3,7 @@ import Course from "../models/Course.js";
 import { Purchase } from "../models/Purchase.js";
 import User from "../models/User.js";
 import { CourseProgress } from "../models/CourseProgress.js";
+import mongoose from "mongoose"; 
 
 // Get User Data
 export const getUserData = async (req, res) => {
@@ -96,15 +97,94 @@ export const purchaseCourse = async (req, res) => {
 };
 
 // Update User Course Progress
+
+// export const updateUserCourseProgress = async (req, res) => {
+//   try {
+//     const { userId } = req.auth.userId;
+//     const { courseId, lectureId } = req.body;
+//     const progressData = await CourseProgress.findOne({ userId, courseId });
+
+//     if (progressData) {
+//       if (progressData.lectureCompleted.includes(lectureId)) {
+//         res.json({ success: true, message: "Lecture already completed" });
+//       }
+
+//       progressData.lectureCompleted.push(lectureId);
+//       await progressData.save();
+//     } else {
+//       await CourseProgress.create({
+//         userId,
+//         courseId,
+//         lectureCompleted: [lectureId],
+//       });
+//     }
+//     res.json({ success: true, message: "Progress Updated" });
+//   } catch (error) {
+//     res.json({ success: false, message: error.message });
+//   }
+// };
+
+// export const updateUserCourseProgress = async (req, res) => {
+//   try {
+//     const { userId, courseId, lectureId } = req.body;
+
+//     // Validation renforcée
+//     const isValid = [userId, courseId, lectureId].every((id) =>
+//       mongoose.Types.ObjectId.isValid(id)
+//     );
+
+//     if (!isValid) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Un ou plusieurs ID sont invalides",
+//         receivedIds: { userId, courseId, lectureId },
+//       });
+//     }
+
+//     // Conversion en ObjectId
+//     const [userIdObj, courseIdObj, lectureIdObj] = [
+//       new mongoose.Types.ObjectId(userId),
+//       new mongoose.Types.ObjectId(courseId),
+//       new mongoose.Types.ObjectId(lectureId),
+//     ];
+
+//     const result = await CourseProgress.findOneAndUpdate(
+//       { userId: userIdObj, courseId: courseIdObj },
+//       { $addToSet: { lectureCompleted: lectureIdObj } },
+//       { upsert: true, new: true }
+//     );
+
+//     res.json({
+//       success: true,
+//       message: "Progression sauvegardée",
+//       data: result,
+//     });
+//   } catch (error) {
+//     console.error("Erreur serveur:", {
+//       error: error.message,
+//       stack: error.stack,
+//       receivedBody: req.body,
+//     });
+//     res.status(500).json({
+//       success: false,
+//       message: "Erreur interne du serveur",
+//     });
+//   }
+// };
+
 export const updateUserCourseProgress = async (req, res) => {
   try {
-    const { userId } = req.auth.userId;
+    const userId = req.auth.userId;
     const { courseId, lectureId } = req.body;
+
     const progressData = await CourseProgress.findOne({ userId, courseId });
 
     if (progressData) {
       if (progressData.lectureCompleted.includes(lectureId)) {
-        res.json({ success: true, message: "Lecture already completed" });
+        return res.json({
+          success: true,
+          message: "Lecture already completed",
+        });
       }
 
       progressData.lectureCompleted.push(lectureId);
@@ -116,11 +196,13 @@ export const updateUserCourseProgress = async (req, res) => {
         lectureCompleted: [lectureId],
       });
     }
+
     res.json({ success: true, message: "Progress Updated" });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
 };
+
 
 // get User Course Progress
 export const getUserCourseProgress = async (req, res) => {
