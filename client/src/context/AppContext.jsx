@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { createContext } from "react";
-import { dummyCourses } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 import humanizeDuration from "humanize-duration";
 import { useAuth, useUser } from "@clerk/clerk-react";
